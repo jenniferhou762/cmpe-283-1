@@ -67,7 +67,7 @@ struct capability_info procbased[21] =
 	{ 31, "Activate secondary controls" },
 };
 
-struct capability_info procbased2[23] =
+struct capability_info procbased2[27] =
 {
 	{ 0, "Virtualize APIC accesses" },
 	{ 1, "Enable EPT" },
@@ -91,7 +91,11 @@ struct capability_info procbased2[23] =
 	{ 19, "Conceal VMX nonroot operation from Intel PT" },
 	{ 20, "Enable XSAVES/XRSTORS" },
 	{ 22, "Mode-based execute control for EPT" },
-	{ 25, "Use TSC scaling" }
+	{ 23, "Sub-page write permissions for EPT" },
+	{ 24, "Intel PT uses guest physical address" },
+	{ 25, "Use TSC scaling" },
+	{ 26, "Enable user wait and pause" },
+	{ 28, "Enable ENCLV exiting" }
 };
 
 struct capability_info exitctls[11] =
@@ -180,7 +184,7 @@ detect_vmx_features(void)
 	rdmsr(IA32_VMX_PROCBASED_CTLS2, lo, hi);
 	pr_info("Procbased Controls 2 MSR: 0x%llx\n",
 		(uint64_t)(lo | (uint64_t)hi << 32));
-	report_capability(procbased2, 23, lo, hi);
+	report_capability(procbased2, 27, lo, hi);
 	printk(KERN_INFO "--------------------");
 
 	rdmsr(IA32_VMX_EXIT_CTLS, lo, hi);
@@ -192,7 +196,7 @@ detect_vmx_features(void)
 	rdmsr(IA32_VMX_ENTRY_CTLS, lo, hi);
 	pr_info("Entry Controls MSR: 0x%llx\n",
 		(uint64_t)(lo | (uint64_t)hi << 32));
-	report_capability(entry, 10, lo, hi);
+	report_capability(entry, 9, lo, hi);
 	printk(KERN_INFO "--------------------");
 
 }
